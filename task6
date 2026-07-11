@@ -1,0 +1,42 @@
+import sys
+ 
+data = sys.stdin.read().strip().split()
+if not data:
+    sys.exit()
+n = int(data[0])
+k = int(data[1])
+a = list(map(int, data[2:2 + n]))
+ 
+if k == n:
+    res = 0
+    for x in a:
+        res ^= x
+    print(res)
+    sys.exit()
+ 
+if k == 1:
+    print(max(a))
+    sys.exit()
+ 
+best = 0
+ 
+mask = (1 << k) - 1
+limit = 1 << n
+ 
+while mask < limit:
+    cur = 0
+    m = mask
+    i = 0
+    while m:
+        if m & 1:
+            cur ^= a[i]
+        i += 1
+        m >>= 1
+    if cur > best:
+        best = cur
+ 
+    u = mask & -mask
+    v = u + mask
+    mask = v + (((mask ^ v) >> 2) // u)
+ 
+print(best)
