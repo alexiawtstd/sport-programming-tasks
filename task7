@@ -1,0 +1,61 @@
+t = int(input())
+for _ in range(t):
+    n, k = map(int, input().split())
+    a = list(map(int, input().split()))
+
+    l, r = 0, n - 1
+    remaining = k
+    turn = 0
+    ytopilsa = 0
+
+    while l <= r and remaining > 0:
+        if l == r:
+            if remaining >= a[l]:
+                ytopilsa += 1
+            break
+
+        if turn == 0:
+            x = a[l]
+            y = a[r]
+            need_left = 2 * x - 1
+            need_right = 2 * y
+            if need_left < need_right:
+                if remaining < need_left:
+                    break
+                remaining -= need_left
+                ytopilsa += 1
+                l += 1
+                a[r] = y - (x - 1)
+                turn = 1
+            else:
+                if remaining < need_right:
+                    break
+                remaining -= need_right
+                ytopilsa += 1
+                r -= 1
+                a[l] = x - y
+                turn = 0
+        else:
+            y = a[r]
+            x = a[l]
+            need_right = 2 * y - 1
+            need_left = 2 * x
+            if need_right < need_left:
+                if remaining < need_right:
+                    break
+                remaining -= need_right
+                ytopilsa += 1
+                r -= 1
+                a[l] = x - (y - 1)
+                turn = 0
+            else:
+                if remaining < need_left:
+                    break
+                remaining -= need_left
+                ytopilsa += 1
+                l += 1
+                a[r] = y - x
+                turn = 1
+
+    print(ytopilsa)
+    
